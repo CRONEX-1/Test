@@ -15,7 +15,22 @@ Bluetooth devices  (11)
  <unnamed>          6A:3F:91:C2:05:77  Apple · Find My tag    -64  ██████░░░░  Near          ▲+4    ~1.5 m    2s
 ```
 
-## Install
+## Mac app (no terminal needed)
+
+There's also a native Mac app with the same features: live tables, signal meters, and a tracking view with a history chart.
+
+1. Download **[Sigscan.zip](https://github.com/CRONEX-1/Test/releases/latest/download/Sigscan.zip)** from the [Releases page](https://github.com/CRONEX-1/Test/releases/latest).
+2. Double-click the zip to unzip it, then drag **Sigscan** into your **Applications** folder.
+3. Open it. The first time, macOS says it can't verify the app, because it isn't signed with a paid Apple developer certificate. Click **Done**. Then open **System Settings → Privacy & Security**, scroll down to "Sigscan was blocked…", click **Open Anyway** and confirm. On macOS 13–14 you can instead right-click the app and choose **Open**. This is only needed once.
+4. Allow **Bluetooth** when asked. Click **Allow…** in the Wi-Fi view and allow **Location**: macOS only shows Wi-Fi network names to apps with Location access. Sigscan never uses your location.
+
+Click any network or device to track it. Walk around and the meter grows as you get closer. You can also turn on beeps that speed up as the signal gets stronger.
+
+Requires macOS 13 Ventura or later; runs natively on Apple Silicon and Intel. The source is in [`macos/`](macos/). GitHub Actions rebuilds the app on every push that changes it (see [`.github/workflows/macos-app.yml`](.github/workflows/macos-app.yml)). To build it yourself on a Mac with Xcode installed, run `macos/build.sh`.
+
+## Command-line version
+
+### Install
 
 Requires Python 3.10+.
 
@@ -31,7 +46,7 @@ To try it without any radio hardware, use simulated devices:
 sigscan --demo
 ```
 
-## Usage
+### Usage
 
 | Command | What it does |
 | --- | --- |
@@ -60,18 +75,18 @@ sigscan track "AirPods" --beep           # find lost earbuds
 sigscan monitor --log kitchen.csv        # record the signal while you test a spot
 ```
 
-## Platform notes
+### Platform notes
 
-### Linux
+#### Linux
 * Wi-Fi uses NetworkManager (`nmcli`) and/or `iw`. With both installed you get exact dBm values without root. With only `nmcli`, dBm is converted from NetworkManager's 0-100 % value (shown with a `~`). Running as root makes `iw` trigger the scans itself.
 * NetworkManager limits how often scans can be triggered. In between, sigscan uses NetworkManager's most recent results.
 * Bluetooth needs BlueZ (`bluetoothd`) running and the adapter powered on (`bluetoothctl power on`).
 
-### macOS
+#### macOS
 * **Location Services:** since macOS 14, network names and BSSIDs are hidden unless your terminal app (Terminal, iTerm, …) has location access. Grant it in *System Settings → Privacy & Security → Location Services*. Signal strengths still work without it.
 * **Bluetooth:** the first run asks for permission for your terminal app. macOS never exposes Bluetooth MAC addresses, so devices show a per-Mac UUID instead.
 
-### Windows
+#### Windows
 * Wi-Fi uses the native WLAN API, which starts a fresh scan and reports exact dBm. If that fails, it falls back to `netsh wlan show networks mode=bssid`.
 * **Windows 11 24H2+:** Wi-Fi scan results require *Settings → Privacy & security → Location* to be on, with "Let desktop apps access your location" enabled.
 * Bluetooth scanning finds BLE devices through the WinRT API (built into Windows 10/11).
