@@ -26,6 +26,8 @@ There's also a native Mac app with the same features: live tables, signal meters
 
 Click any network or device to track it. Walk around and the meter grows as you get closer. You can also turn on beeps that speed up as the signal gets stronger.
 
+**No download available yet? Build it on your Mac with a double-click.** Download the [project zip](https://github.com/CRONEX-1/Test/archive/refs/heads/claude/stoic-feynman-1duxg6.zip), unzip it, open the `macos` folder and double-click **Build Sigscan**. The first time, macOS may block it: use **Open Anyway** in Privacy & Security, as above. If Apple's free Command Line Tools are missing, a window offers to install them; click **Install**, then double-click **Build Sigscan** again. The script builds the app, puts it in Applications and opens it.
+
 Requires macOS 13 Ventura or later; runs natively on Apple Silicon and Intel. The source is in [`macos/`](macos/). GitHub Actions rebuilds the app on every push that changes it (see [`.github/workflows/macos-app.yml`](.github/workflows/macos-app.yml)). To build it yourself on a Mac with Xcode installed, run `macos/build.sh`.
 
 ## Command-line version
